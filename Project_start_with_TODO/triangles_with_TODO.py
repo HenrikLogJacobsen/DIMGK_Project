@@ -222,7 +222,7 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
         for j in range(3):
             zeta = zetaInt[i,:]
             w = wInt[i]
-            nx,ny = tri6_shape_function_partials_x_and_y(zeta, ex, ey)
+            nx, ny = tri6_shape_function_partials_x_and_y(zeta, ex, ey)
             B = tri6_Bmatrix(zeta, ex, ey)
             Ke += w * A * np.dot(np.dot(B.T, D), B)
     # ----------------------------

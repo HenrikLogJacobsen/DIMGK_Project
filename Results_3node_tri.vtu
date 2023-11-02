@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<VTKFile type="UnstructuredGrid" version="0.1" byte_order="LittleEndian" compressor="vtkZLibDataCompressor">
+<!--This file was created by meshio v5.3.4-->
+<UnstructuredGrid>
+<Piece NumberOfPoints="240" NumberOfCells="60">
+<Points>
+<DataArray type="Float64" Name="Points" NumberOfComponents="3" format="binary">
+AQAAAACAAACAFgAAuwEAAA==eJydkjFug0AQRSkpKSgoKBDiHt5L5JK5T46Q3o2bVJGszEq7/BfN3+l4lh8ez5um/+b5IP7xnq/b5x4nT/Bv8GQ5eWIv3i/HyRPvfcHvzHLyPB+f7/m5eTxOnrpP6T2a0//F3x/r4dYVeILne4CuwBN75XvQnDzx3nwP0BV4puL2AF2Bp969tBi76p//ZkY+1kPPyTPj3T1Ontgr34Pm5Jnx7h4nz4x39zh56t1Ly6kr6mRBPtZDz8mz2D1oTp7YK9+D5uRZ7B40J89i96A5eerdS8upK+pkRT7WQ8/Js9o9aE6e2Cvfg+bkWe0eNCfPavegOXnq3UvLqSvqZEM+1kPPybPZPWhOntgr34Pm5NnsHjQnz2b3oDl56t1Ly6kr6mRHPtZDz8mz2z1oTp7YK9+D5uTZ7R40J89u96A5eerdS8upK+rkQD7WQ8/Jc9g9aE6e2Cvfg+bkOeweNCfPYfegOXnq3UvLqSvq5EQ+1kPPyXPaPWhOntgr34Pm5DntHjQnz2n3oDl5Yi/spONn9xxzIR/roefkueweNCdP7JXvQXPyXHYPmpPnsnvQnDz17qXl543/ArU33Pc=
+</DataArray>
+</Points>
+<Cells>
+<DataArray type="Int32" Name="connectivity" format="binary">
+AQAAAACAAADAAwAAdwEAAA==eJwNwwN3FgAAAMCvlm23sGzbWK1l27aNpa1aXrZt27Zte3+hu/cuEAgE4hjXIOMZ3wQmNJGJTWJSk5ncFKY0lalNY1rTmd4MZjSTmc1iVrOZ3WBzmNNc5jbEPOY1n/ktYEELWdgiFrWYxS1hSUtZ2jKWtZzlrWBFK1nZKla1mtWtYU1rWds61jXUetY3zAaG29BGNraJTW1mc1vY0la2to1tbWd7O9jRTna2i13tZnd72NNe9raPfe1nfwc40EEOdohDHeZwRzjSUY52jGMd53gnONFJTnaKEU51mtOd4UwjjXKWs51jtHOd53wXuNBFLjbGJS51mctd4UpXudo1rnWd693gRje52S1udZvb3eFOd7nbPe51n/s94EEPedgjHvWYxz3hSU952jOe9ZznveBFL3nZK171mte94U1veds73vWe933gQx/52Cc+9ZnPfeFLX/naN771ne/94Ec/+dkvfvWb3/3hT3/52z/+9Z+x/gerVHAJ
+</DataArray>
+<DataArray type="Int32" Name="offsets" format="binary">
+AQAAAACAAADwAAAAhwAAAA==eJwNwxESAgEAAMCDIAiCIAiCIAiCIAiCIAiCIAiCIAiCIDgIgiAIgiAIgiAIgiAIgiAIgiAIgiDoCe3ObCQIgqgx4yZMmjJtxqw58xYsWrJsxao16zZs2rJtx649+w4cGjpy7MSpM+cuXLpy7catO/cePHry7MWrN+8+fPry7cevP/89NxyZ
+</DataArray>
+<DataArray type="Int32" Name="types" format="binary">
+AQAAAACAAADwAAAADwAAAA==eJzjZGBg4BxBGAACVwId
+</DataArray>
+</Cells>
+<PointData>
+<DataArray type="Float64" Name="displacement" NumberOfComponents="3" format="binary">
+AQAAAACAAACAFgAAOwAAAA==eJzt0SEBACAQBEGakY8Q0IQI+I+D51EoxIw8seZKAQAAAAB4M6L1aKve95n2t37u6P/Qz7+fNo7hO80=
+</DataArray>
+<DataArray type="Int32" Name="stress" NumberOfComponents="3" format="binary">
+AQAAAACAAABACwAAMgAAAA==eJztysEJACAMBMGNUfsvOQH9WYJ7sHCPCWByNrp1f3abd6HX6/V6vV6v13/sC94VBO0=
+</DataArray>
+</PointData>
+</Piece>
+</UnstructuredGrid>
+</VTKFile>
