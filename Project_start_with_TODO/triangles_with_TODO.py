@@ -126,7 +126,6 @@ def zeta_partials_x_and_y(ex,ey):
     :param list ex: element x coordinates [x1, x2, x3]
     :param list ey: element y coordinates [y1, y2, y3]
     """
-    
     tmp = np.array([[1,ex[0],ey[0]],
                     [1,ex[1],ey[1]],
                     [1,ex[2],ey[2]]])
@@ -138,13 +137,11 @@ def zeta_partials_x_and_y(ex,ey):
     zeta_px = np.zeros(3)           # Partial derivative with respect to x
     zeta_py = np.zeros(3)           # Partial derivative with respect to y
 
-    # TODO: validate this
     for i in range(3):
         j = cyclic_ijk[i+1]
         k = cyclic_ijk[i+2]
         zeta_px[i] = (ey[j] - ey[k]) / A2
         zeta_py[i] = (ex[k] - ex[j]) / A2
-    # ----------------------------
 
     return zeta_px, zeta_py
 
@@ -167,21 +164,10 @@ def tri6_shape_functions(zeta):
 
     N6 = np.zeros(6)
 
-    # TODO: validate this
     for i in range(3):
         j = cyclic_ijk[i+1]
-        k = cyclic_ijk[i+2]
-        l = cyclic_ijk[i+3]
-        N6[i] = zeta[i] * (2 * zeta[i] - 1)
+        N6[i] = zeta[i] * 2 (zeta[i] - 1/2)
         N6[i+3] = 4 * zeta[i] * zeta[j]
-    
-    N6[0] = N6[0] - zeta[3] * (2 * zeta[3] - 1)
-    N6[1] = N6[1] - zeta[5] * (2 * zeta[5] - 1)
-    N6[2] = N6[2] - zeta[4] * (2 * zeta[4] - 1)
-    N6[3] = N6[3] - 4 * zeta[3] * zeta[5]
-    N6[4] = N6[4] - 4 * zeta[5] * zeta[4]
-    N6[5] = N6[5] - 4 * zeta[4] * zeta[3]
-    # ----------------------------
 
     return N6
 
@@ -190,6 +176,7 @@ def tri6_shape_function_partials_x_and_y(zeta,ex,ey):
     
     zeta_px, zeta_py = zeta_partials_x_and_y(ex,ey)
     
+    print('zeta:', zeta)
     N6_px = np.zeros(6)
     N6_py = np.zeros(6)
     
@@ -199,24 +186,11 @@ def tri6_shape_function_partials_x_and_y(zeta,ex,ey):
     for i in range(3):
         j = cyclic_ijk[i+1]
         k = cyclic_ijk[i+2]
-        l = cyclic_ijk[i+3]
         N6_px[i] = zeta_px[i] * (4 * zeta[i] - 1) + zeta[i] * (4 * zeta_px[i] - 1)
         N6_py[i] = zeta_py[i] * (4 * zeta[i] - 1) + zeta[i] * (4 * zeta_py[i] - 1)
-        N6_px[l] = zeta_px[i] * 4 * zeta[j] + zeta[j] * 4 * zeta_px[i]
-        N6_py[l] = zeta_py[i] * 4 * zeta[j] + zeta[j] * 4 * zeta_py[i]
+        N6_px[k] = zeta_px[i] * 4 * zeta[j] + zeta[j] * 4 * zeta_px[i]
+        N6_py[k] = zeta_py[i] * 4 * zeta[j] + zeta[j] * 4 * zeta_py[i]
     
-    N6_px[0] = N6_px[0] - zeta_px[3] * (4 * zeta[3] - 1) - zeta[3] * (4 * zeta_px[3] - 1)
-    N6_py[0] = N6_py[0] - zeta_py[3] * (4 * zeta[3] - 1) - zeta[3] * (4 * zeta_py[3] - 1)
-    N6_px[1] = N6_px[1] - zeta_px[5] * (4 * zeta[5] - 1) - zeta[5] * (4 * zeta_px[5] - 1)
-    N6_py[1] = N6_py[1] - zeta_py[5] * (4 * zeta[5] - 1) - zeta[5] * (4 * zeta_py[5] - 1)
-    N6_px[2] = N6_px[2] - zeta_px[4] * (4 * zeta[4] - 1) - zeta[4] * (4 * zeta_px[4] - 1)
-    N6_py[2] = N6_py[2] - zeta_py[4] * (4 * zeta[4] - 1) - zeta[4] * (4 * zeta_py[4] - 1)
-    N6_px[3] = N6_px[3] - zeta_px[3] * 4 * zeta[5] - zeta[3] * 4 * zeta_px[5]
-    N6_py[3] = N6_py[3] - zeta_py[3] * 4 * zeta[5] - zeta[3] * 4 * zeta_py[5]
-    N6_px[4] = N6_px[4] - zeta_px[5] * 4 * zeta[4] - zeta[5] * 4 * zeta_px[4]
-    N6_py[4] = N6_py[4] - zeta_py[5] * 4 * zeta[4] - zeta[5] * 4 * zeta_py[4]
-    N6_px[5] = N6_px[5] - zeta_px[4] * 4 * zeta[3] - zeta[4] * 4 * zeta_px[3]
-    N6_py[5] = N6_py[5] - zeta_py[4] * 4 * zeta[3] - zeta[4] * 4 * zeta_py[3]
     # ----------------------------
 
     return N6_px, N6_py
