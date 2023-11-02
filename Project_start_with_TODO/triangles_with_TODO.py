@@ -166,7 +166,7 @@ def tri6_shape_functions(zeta):
 
     for i in range(3):
         j = cyclic_ijk[i+1]
-        N6[i] = zeta[i] * 2 (zeta[i] - 1/2)
+        N6[i] = zeta[i] * 2 * (zeta[i] - 1/2)
         N6[i+3] = 4 * zeta[i] * zeta[j]
 
     return N6
@@ -176,22 +176,17 @@ def tri6_shape_function_partials_x_and_y(zeta,ex,ey):
     
     zeta_px, zeta_py = zeta_partials_x_and_y(ex,ey)
     
-    print('zeta:', zeta)
     N6_px = np.zeros(6)
     N6_py = np.zeros(6)
     
     cyclic_ijk = [0,1,2,0,1]      # Cyclic permutation of the nodes i,j,k
 
-    # TODO: validate this
     for i in range(3):
         j = cyclic_ijk[i+1]
-        k = cyclic_ijk[i+2]
-        N6_px[i] = zeta_px[i] * (4 * zeta[i] - 1) + zeta[i] * (4 * zeta_px[i] - 1)
-        N6_py[i] = zeta_py[i] * (4 * zeta[i] - 1) + zeta[i] * (4 * zeta_py[i] - 1)
-        N6_px[k] = zeta_px[i] * 4 * zeta[j] + zeta[j] * 4 * zeta_px[i]
-        N6_py[k] = zeta_py[i] * 4 * zeta[j] + zeta[j] * 4 * zeta_py[i]
-    
-    # ----------------------------
+        N6_px[i] = 4 * zeta_px[i] * zeta[i] - zeta_px[i]
+        N6_py[i] = 4 * zeta_py[i] * zeta[i] - zeta_py[i]
+        N6_px[i+3] = 4 * (zeta[j]*zeta_px[i] + zeta[i]*zeta_px[j])
+        N6_py[i+3] = 4 * (zeta[j]*zeta_py[i] + zeta[i]*zeta_py[j])
 
     return N6_px, N6_py
 
@@ -202,12 +197,10 @@ def tri6_Bmatrix(zeta,ex,ey):
 
     Bmatrix = np.zeros((3,12))
 
-    # TODO: validate this
-    Bmatrix[0, 0::2] = nx
-    Bmatrix[1, 1::2] = ny
-    Bmatrix[2, 0::2] = ny
-    Bmatrix[2, 1::2] = nx
-    # ----------------------------
+    Bmatrix[0,0::2] = nx
+    Bmatrix[1,1::2] = ny
+    Bmatrix[2,0::2] = ny
+    Bmatrix[2,1::2] = nx
 
     return Bmatrix
 
