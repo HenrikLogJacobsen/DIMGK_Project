@@ -217,30 +217,38 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
 
     Ke = np.zeros((12,12))
 
-    # TODO: validate this
+    # Not Sure about this
     for i in range(3):
         for j in range(3):
             zeta = zetaInt[i,:]
-            w = wInt[i]
-            nx, ny = tri6_shape_function_partials_x_and_y(zeta, ex, ey)
+            wi = wInt[i]
+            wj = wInt[j]
             B = tri6_Bmatrix(zeta, ex, ey)
-            Ke += w * A * np.dot(np.dot(B.T, D), B)
+            Ke += wi * wj * np.dot(np.dot(B.T, D), B)
     # ----------------------------
 
     if eq is None:
         return Ke
     else:
-        fe = np.zeros((12,1))
+        fx = A * th * eq[0] / 6.0
+        fy = A * th * eq[1] / 6.0
+        fe = np.array([[fx], [fy], [fx], [fy], [fx], [fy], [fx], [fy], [fx], [fy], [fx], [fy]])
+        # fe = np.zeros((12,1))
+        # zpx,zpy = zeta_partials_x_and_y(ex, ey)
+        # J = np.array([[zpx[0],zpx[1]],
+        #               [zpy[0],zpy[1]]])
 
-        # TODO: validate this
-        for i in range(3):
-            zeta = zetaInt[i,:]
-            w = wInt[i]
-            N = tri6_shape_functions(zeta)
-            J = zeta_partials_x_and_y(ex, ey)
-            detJ = np.linalg.det(J)
-            fe += w * A * N.T * eq * detJ
-        # ----------------------------
+        # # TODO: validate this
+        # for i in range(3):
+        #     print("i:",i)
+        #     zeta = zetaInt[i,:]
+        #     w = wInt[i]
+        #     Ji = J
+        #     B = tri6_Bmatrix(zeta, ex, ey)
+        #     sigma = np.array([eq[0],eq[1], th])
+        #     detJi = np.linalg.det(Ji)
+        #     fe += w * A * B.T @ sigma * detJi
+        # # ----------------------------
 
         return Ke, fe
 
