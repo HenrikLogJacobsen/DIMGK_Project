@@ -39,7 +39,7 @@ endLoadXY = np.array([0.0,3.0e6])
 
 ep = [1,thickness]
 E  = 2.1e11
-nu = 0.3
+nu = 0.3    # Poisson's ratio, 0.3 for steel, can also be 0.0 (incompressible)
 Dmat = np.array([
         [ 1.0,  nu,  0.],
         [  nu, 1.0,  0.],
@@ -102,7 +102,7 @@ for iel in range(numElements):
         cornerStresses = tri.tri3_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
     elif nElNodes == 6:
         #cornerStresses= tri.tri6_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
-        cornerStresses = [[1,4,0],[2,5,0],[3,6,0]]
+        cornerStresses = tri.tri6_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
     elif nElNodes == 4:
         #cornerStresses = quad.quad4_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
         cornerStresses = [[1,4,0],[2,5,0],[3,6,0],[0,0,0]]

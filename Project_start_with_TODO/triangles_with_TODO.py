@@ -146,6 +146,33 @@ def zeta_partials_x_and_y(ex,ey):
     return zeta_px, zeta_py
 
 # Functions for 6 node triangle
+
+def tri6_cornerstresses(ex, ey, D, th, elDispVec):
+    """
+    Compute the corner stresses for all 3 corner nodes
+
+    :param list ex: element x coordinates [x1, x2, x3]
+    :param list ey: element y coordinates [y1, y2, y3]
+    :param list D : 2D constitutive matrix
+    :param list th: element thickness
+    :param list eq: distributed loads, local directions [bx, by]
+    :return mat Ke: element stiffness matrix [6 x 6]
+    :return mat fe: consistent load vector [6 x 1] (if eq!=None)
+    """
+
+    zetaCorner = np.array([[1.0,0.0,0.0],
+                        [0.0,1.0,0.0],
+                        [0.0,0.0,1.0]])
+
+
+    cornerStresses = []
+    for inod in range(3):
+        B = tri6_Bmatrix(zetaCorner[inod], ex, ey)
+        strain = B @ elDispVec
+        stress = D @ strain
+        cornerStresses.append([stress[0], stress[1], stress[2]])
+
+    return cornerStresses
     
 def tri6_area(ex,ey):
         
@@ -171,6 +198,17 @@ def tri6_shape_functions(zeta):
 
     return N6
 
+
+def tri6_N_matrix(zeta):
+
+    N_mat = np.zeros((2,12))
+    N6 = tri6_shape_functions(zeta)
+    
+    for i in range(6):
+        N_mat[0,i*2] = N6[i]
+        N_mat[1,i*2+1] = N6[i]
+
+    return N_mat
 
 def tri6_shape_function_partials_x_and_y(zeta,ex,ey):
     
@@ -224,31 +262,24 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
             wi = wInt[i]
             wj = wInt[j]
             B = tri6_Bmatrix(zeta, ex, ey)
-            Ke += wi * wj * np.dot(np.dot(B.T, D), B)
+            Ke += wi * wj * np.dot(np.dot(B.T, D), B) * A * th
     # ----------------------------
-
+    print()
+    print("Ke:",Ke)
     if eq is None:
         return Ke
     else:
-        fx = A * th * eq[0] / 6.0
-        fy = A * th * eq[1] / 6.0
-        fe = np.array([[fx], [fy], [fx], [fy], [fx], [fy], [fx], [fy], [fx], [fy], [fx], [fy]])
-        # fe = np.zeros((12,1))
-        # zpx,zpy = zeta_partials_x_and_y(ex, ey)
-        # J = np.array([[zpx[0],zpx[1]],
-        #               [zpy[0],zpy[1]]])
+        fe = np.zeros((12,1))
+        # TODO: validate this
+        eqMat = np.array([[eq[0]],[eq[1]]])
+        for i in range(3):
+            zeta = zetaInt[i,:]
+            wi = wInt[i]
+            wj = wInt[j]
+            N = tri6_N_matrix(zeta)
+            fe += N.T @ eqMat * wi * wj * A * th
 
-        # # TODO: validate this
-        # for i in range(3):
-        #     print("i:",i)
-        #     zeta = zetaInt[i,:]
-        #     w = wInt[i]
-        #     Ji = J
-        #     B = tri6_Bmatrix(zeta, ex, ey)
-        #     sigma = np.array([eq[0],eq[1], th])
-        #     detJi = np.linalg.det(Ji)
-        #     fe += w * A * B.T @ sigma * detJi
-        # # ----------------------------
+        # ----------------------------
 
         return Ke, fe
 
