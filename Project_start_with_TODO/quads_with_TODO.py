@@ -87,7 +87,7 @@ def quad4_shapefuncs_grad_eta(xsi, eta):
 
 #     return cornerStresses
 
-
+#Dont know if this is correct
 def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
     """
     Compute the stiffness matrix for a four node membrane element.
