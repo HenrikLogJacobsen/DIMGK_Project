@@ -262,10 +262,8 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
             wi = wInt[i]
             wj = wInt[j]
             B = tri6_Bmatrix(zeta, ex, ey)
-            Ke += wi * wj * np.dot(np.dot(B.T, D), B) * A * th
+            Ke += wi * wj * ((B.T @ D) @ B) * A * th
     # ----------------------------
-    print()
-    print("Ke:",Ke)
     if eq is None:
         return Ke
     else:
