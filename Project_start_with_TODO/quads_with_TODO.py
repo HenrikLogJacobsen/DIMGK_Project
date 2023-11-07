@@ -47,6 +47,10 @@ def quad4_shapefuncs(xsi, eta):
     # ----- Shape functions -----
     # TODO: fill inn values of the  shape functions
     N = np.zeros(4)
+    N[0] = 0.25 * (1 - xsi) * (1 - eta)
+    N[1] = 0.25 * (1 + xsi) * (1 - eta)
+    N[2] = 0.25 * (1 + xsi) * (1 + eta)
+    N[3] = 0.25 * (1 - xsi) * (1 + eta)
     return N
 
 def quad4_shapefuncs_grad_xsi(xsi, eta):
@@ -57,6 +61,10 @@ def quad4_shapefuncs_grad_xsi(xsi, eta):
     # TODO: fill inn values of the  shape functions gradients with respect to xsi
 
     Ndxi = np.zeros(4)
+    Ndxi[0] = -0.25 * (1 - eta)
+    Ndxi[1] =  0.25 * (1 - eta)
+    Ndxi[2] =  0.25 * (1 + eta)
+    Ndxi[3] = -0.25 * (1 + eta)
     return Ndxi
 
 
@@ -67,9 +75,17 @@ def quad4_shapefuncs_grad_eta(xsi, eta):
     # ----- Derivatives of shape functions with respect to eta -----
     # TODO: fill inn values of the  shape functions gradients with respect to xsi
     Ndeta = np.zeros(4)
+    Ndeta[0] = -0.25 * (1 - xsi)
+    Ndeta[1] = -0.25 * (1 + xsi)
+    Ndeta[2] =  0.25 * (1 + xsi)
+    Ndeta[3] =  0.25 * (1 - xsi)
     return Ndeta
 
+# def quad4_cornerstresses(ex, ey, D, thickness, elDisp):
+#     points = gauss_points(4)
 
+
+#     return cornerStresses
 
 
 def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
@@ -119,7 +135,8 @@ def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
             G = np.array([Ndxsi, Ndeta])  # Collect gradients of shape function evaluated at xi and eta
 
             #TODO: Calculate Jacobian, inverse Jacobian and determinant of the Jacobian
-            J = np.eye(2) #TODO: Correct this
+            J = np.array([[np.dot(Ndxsi, ex), np.dot(Ndxsi, ey)],
+                          [np.dot(Ndeta, ex), np.dot(Ndeta, ey)]])
             invJ = np.linalg.inv(J)  # Inverse of Jacobian
             detJ = np.linalg.det(J)  # Determinant of Jacobian
 
@@ -130,19 +147,91 @@ def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
             # Strain displacement matrix calculated at position xsi, eta
 
             #TODO: Fill out correct values for strain displacement matrix at current xsi and eta
-            B  = np.zeros((3,8))
+            B  = np.array([[dNdx[0], 0, dNdx[1], 0, dNdx[2], 0, dNdx[3], 0],
+                           [0, dNdy[0], 0, dNdy[1], 0, dNdy[2], 0, dNdy[3]],
+                           [dNdy[0], dNdx[0], dNdy[1], dNdx[1], dNdy[2], dNdx[2], dNdy[3], dNdx[3]]])
 
             #TODO: Fill out correct values for displacement interpolation xsi and eta
-            N2 = np.zeros((2,8))
+            N2 = np.array([[N1[0], 0, N1[1], 0, N1[2], 0, N1[3], 0],
+                           [0, N1[0], 0, N1[1], 0, N1[2], 0, N1[3]]])
 
             # Evaluates integrand at current integration points and adds to final solution
             Ke += (B.T) @ D @ B * detJ * t * gw[iGauss] * gw[jGauss]
             fe += (N2.T) @ f    * detJ * t * gw[iGauss] * gw[jGauss]
 
-    # TODO: remove this
-    Ke = np.eye(8) * 1.0e6
-
     return Ke, fe  # Returns stiffness matrix and nodal force vector
+    
+# def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
+#     """
+#     Compute the stiffness matrix for a four node membrane element.
+
+#     Parameters:
+
+#         ex  = [x1 ... x4]           Element coordinates. Row matrix
+#         ey  = [y1 ... y4]
+#         D   =           Constitutive matrix
+#         thickness:      Element thickness
+#         eq = [bx; by]       bx:     body force in x direction
+#                             by:     body force in y direction
+
+#     Returns:
+
+#         Ke : element stiffness matrix (8 x 8)
+#         fe : equivalent nodal forces (4 x 1)
+
+#     """
+#     t = thickness
+
+#     if eq is None:
+#         f = np.zeros((2,1))  # Create zero matrix for load if load is zero
+#     else:
+#         f = np.array([eq]).T  # Convert load to 2x1 matrix
+
+#     Ke = np.zeros((8,8))        # Create zero matrix for stiffness matrix
+#     fe = np.zeros((8,1))        # Create zero matrix for distributed load
+
+#     numGaussPoints = 2  # Number of integration points
+#     gp, gw = gauss_points(numGaussPoints)  # Get integration points and -weight
+
+#     for iGauss in range(numGaussPoints):  # Solves for K and fe at all integration points
+#         for jGauss in range(numGaussPoints):
+
+#             xsi = gp[iGauss]
+#             eta = gp[jGauss]
+
+#             Ndxsi = quad4_shapefuncs_grad_xsi(xsi, eta)
+#             Ndeta = quad4_shapefuncs_grad_eta(xsi, eta)
+#             N1    = quad4_shapefuncs(xsi, eta)  # Collect shape functions evaluated at xi and eta
+
+#             # Matrix H and G defined according to page 52 of Waløens notes
+#             H = np.transpose([ex, ey])    # Collect global x- and y coordinates in one matrix
+#             G = np.array([Ndxsi, Ndeta])  # Collect gradients of shape function evaluated at xi and eta
+
+#             #TODO: Calculate Jacobian, inverse Jacobian and determinant of the Jacobian
+#             J = np.eye(2) #TODO: Correct this
+#             invJ = np.linalg.inv(J)  # Inverse of Jacobian
+#             detJ = np.linalg.det(J)  # Determinant of Jacobian
+
+#             dN = invJ @ G  # Derivatives of shape functions with respect to x and y
+#             dNdx = dN[0]
+#             dNdy = dN[1]
+
+#             # Strain displacement matrix calculated at position xsi, eta
+
+#             #TODO: Fill out correct values for strain displacement matrix at current xsi and eta
+#             B  = np.zeros((3,8))
+
+#             #TODO: Fill out correct values for displacement interpolation xsi and eta
+#             N2 = np.zeros((2,8))
+
+#             # Evaluates integrand at current integration points and adds to final solution
+#             Ke += (B.T) @ D @ B * detJ * t * gw[iGauss] * gw[jGauss]
+#             fe += (N2.T) @ f    * detJ * t * gw[iGauss] * gw[jGauss]
+
+#     # TODO: remove this
+#     Ke = np.eye(8) * 1.0e6
+
+#     return Ke, fe  # Returns stiffness matrix and nodal force vector
 
 
 def quad9_Kmatrix(ex,ey,D,th,eq=None):

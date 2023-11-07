@@ -13,7 +13,7 @@ import fem_utilities as fem_util
 import fem_models
 
 # Element Type
-numElementNodes = 6  # Valid numbers 3, 4, 6, 9
+numElementNodes = 4  # Valid numbers 3, 4, 6, 9
 
 # Number of nodes: Should be odd numbers in order to handle 9 node quad and 6 node triangle
 numNodesX = 21
@@ -101,7 +101,6 @@ for iel in range(numElements):
     if nElNodes == 3:
         cornerStresses = tri.tri3_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
     elif nElNodes == 6:
-        #cornerStresses= tri.tri6_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
         cornerStresses = tri.tri6_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
     elif nElNodes == 4:
         #cornerStresses = quad.quad4_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
@@ -125,5 +124,5 @@ for i in range(0,(numNodesY*2),2):
 print("Total reaction force in x:{:12.3e} y:{:12.3e})".format(R0Sum[0],R0Sum[1]))
 
 # Draw the displacements and stresses
-model.vtu_write_stl_style_mesh("Results_6node_tri_1.vtu",dispVector=r,elementCornerStresses=elementCornerStresses)
+model.vtu_write_stl_style_mesh("Results_4node_quad_1.vtu",dispVector=r,elementCornerStresses=elementCornerStresses)
 
