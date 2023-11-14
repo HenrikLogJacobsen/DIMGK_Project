@@ -81,11 +81,53 @@ def quad4_shapefuncs_grad_eta(xsi, eta):
     Ndeta[3] =  0.25 * (1 - xsi)
     return Ndeta
 
-# def quad4_cornerstresses(ex, ey, D, thickness, elDisp):
-#     points = gauss_points(4)
+#Looks correct in Paraview except for Stress in Z-direction
+def quad4_cornerstresses(ex, ey, D, thickness, elDisp):
+    cornerNodes = np.array([[-1.0,-1.0],
+                           [ 1.0,-1.0],
+                           [ 1.0, 1.0],
+                           [-1.0, 1.0]])
 
+    cornerStresses = []
+    for inod in range(4):
+        B = quad4_Bmatrix(cornerNodes[inod, 0], cornerNodes[inod, 1], ex, ey)
+        strain = B @ elDisp
+        stress = D @ strain
+        cornerStresses.append([stress[0], stress[1], stress[2]])
 
-#     return cornerStresses
+    return cornerStresses
+
+#Dont know if this is correct
+def quad4_Bmatrix(xsi, eta, ex, ey):
+    """
+    Calculates the B matrix for a 4 node quadrilateral element
+    """
+    # ----- Derivatives of shape functions -----
+    Ndxi = quad4_shapefuncs_grad_xsi(xsi, eta)
+    Ndeta = quad4_shapefuncs_grad_eta(xsi, eta)
+
+    # ----- Jacobian matrix -----
+    J11 = Ndxi @ ex
+    J12 = Ndxi @ ey
+    J21 = Ndeta @ ex
+    J22 = Ndeta @ ey
+
+    # ----- Inverse of Jacobian matrix -----
+    detJ = J11 * J22 - J12 * J21
+    invJ = np.array([[J22, -J12], [-J21, J11]]) / detJ
+
+    # ----- Derivatives of shape functions with respect to x and y -----
+    Ndx = invJ[0, 0] * Ndxi + invJ[0, 1] * Ndeta
+    Ndy = invJ[1, 0] * Ndxi + invJ[1, 1] * Ndeta
+
+    # ----- B matrix -----
+    B = np.zeros((3, 8))
+    B[0, 0::2] = Ndx
+    B[1, 1::2] = Ndy
+    B[2, 0::2] = Ndy
+    B[2, 1::2] = Ndx
+
+    return B
 
 #Dont know if this is correct
 def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
@@ -160,7 +202,10 @@ def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
             fe += (N2.T) @ f    * detJ * t * gw[iGauss] * gw[jGauss]
 
     return Ke, fe  # Returns stiffness matrix and nodal force vector
-    
+
+
+#ORIGINAL CODE
+#  
 # def quad4_Kmatrix(ex, ey, D, thickness, eq=None):
 #     """
 #     Compute the stiffness matrix for a four node membrane element.

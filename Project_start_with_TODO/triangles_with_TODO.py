@@ -112,7 +112,7 @@ def tri3_cornerstresses(ex, ey, D, th, elDispVec):
 
     strain = B @ elDispVec
     stress = D @ strain
-
+    
     cornerStresses = []
     for inod in range(3):
         cornerStresses.append([stress[0], stress[1], stress[2]])

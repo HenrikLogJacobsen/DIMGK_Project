@@ -103,8 +103,8 @@ for iel in range(numElements):
     elif nElNodes == 6:
         cornerStresses = tri.tri6_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
     elif nElNodes == 4:
-        #cornerStresses = quad.quad4_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
-        cornerStresses = [[1,4,0],[2,5,0],[3,6,0],[0,0,0]]
+        cornerStresses = quad.quad4_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
+        #cornerStresses = [[1,4,0],[2,5,0],[3,6,0],[0,0,0]]
     elif nElNodes == 9:
         cornerStresses = [[1,4,0],[2,5,0],[3,6,0],[0,0,0]]
         #cornerStresses = quad.quad9_cornerstresses(ex_el,ey_el,Dmat,thickness,elDisp)
