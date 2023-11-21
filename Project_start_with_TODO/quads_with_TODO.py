@@ -297,8 +297,8 @@ def quad9_Kmatrix(ex, ey, D, th, eq=None):
     :param list D : 2D constitutive matrix
     :param list th: element thickness
     :param list eq: distributed loads, local directions [bx, by]
-    :return mat Ke: element stiffness matrix [6 x 6]
-    :return mat fe: consistent load vector [6 x 1] (if eq!=None)
+    :return mat Ke: element stiffness matrix [18 x 18]
+    :return mat fe: consistent load vector [18 x 1] (if eq!=None)
     """
     if eq is None:
         f = np.zeros((2,1))
