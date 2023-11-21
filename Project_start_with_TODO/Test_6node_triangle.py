@@ -7,6 +7,7 @@ Created on Sun Oct 21 16:38:14 2018
 
 import numpy as np
 import triangles_with_TODO as tri
+import quads_with_TODO as quad
 
 cyclic_ijk = [0,1,2,0,1]      # Cyclic permutation of the nodes i,j,k
 
@@ -100,5 +101,8 @@ for i in range(3):
     print('Ey:\n',Ey)
     print('G:\n',G1)
     print('G:\n',G2)
+
+
+
 
     
