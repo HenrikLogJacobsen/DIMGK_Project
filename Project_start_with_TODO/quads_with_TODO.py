@@ -198,15 +198,15 @@ def quad9_shapefuncs(xsi, eta):
     """
     # ----- Shape functions -----
     N = np.zeros(9)
-    N[0] = 0.25 * (1 - xsi) * (1 - eta) * (- xsi - eta - 1)
-    N[1] = 0.25 * (1 + xsi) * (1 - eta) * (  xsi - eta - 1)
-    N[2] = 0.25 * (1 + xsi) * (1 + eta) * (  xsi + eta - 1)
-    N[3] = 0.25 * (1 - xsi) * (1 + eta) * (- xsi + eta - 1)
-    N[4] = 0.5  * (1 - xsi**2) * (1 - eta)
-    N[5] = 0.5  * (1 + xsi) * (1 - eta**2)
-    N[6] = 0.5  * (1 - xsi**2) * (1 + eta)
-    N[7] = 0.5  * (1 - xsi) * (1 - eta**2)
-    N[8] = (1 - xsi**2) * (1 - eta**2)
+    N[0] = 0.25 * xsi * eta * (1-xsi) * (1-eta)
+    N[1] = -0.25 * xsi * eta * (1+xsi) * (1-eta)
+    N[2] = 0.25 * xsi * eta * (1+xsi) * (1+eta)
+    N[3] = -0.25 * xsi * eta * (1-xsi) * (1+eta)
+    N[4] = -0.5 * (1+xsi) * (1-xsi) * eta * (1-eta)
+    N[5] = 0.5 * xsi * (1+xsi) * (1-eta) * (1+eta)
+    N[6] = 0.5 * (1+xsi) * (1-xsi) * eta * (1+eta)
+    N[7] = -0.5 * xsi * (1-xsi) * (1-eta) * (1 + eta)
+    N[8] = (1+xsi) * (1-xsi) * (1+eta) * (1-eta)
     return N
 
 def quad9_shapefuncs_grad_xsi(xsi, eta):
@@ -214,14 +214,14 @@ def quad9_shapefuncs_grad_xsi(xsi, eta):
     Calculates derivatives of shape functions wrt. xsi
     """
     Ndxi = np.zeros(9)
-    Ndxi[0] = 0.25 * (2*xsi + eta + 1) * (eta - 1)
-    Ndxi[1] = 0.25 * (2*xsi - eta - 1) * (eta - 1)
-    Ndxi[2] = 0.25 * (2*xsi + eta + 1) * (eta + 1)
-    Ndxi[3] = 0.25 * (2*xsi - eta - 1) * (eta + 1)
-    Ndxi[4] = xsi * (eta - 1)
-    Ndxi[5] = 0.5 * (1 - eta**2)
-    Ndxi[6] = -xsi * (eta + 1)
-    Ndxi[7] = -0.5 * (1 - eta**2)
+    Ndxi[0] = 0.25 * (1-2*xsi) * eta * (1-eta)
+    Ndxi[1] = -0.25 * (1+2*xsi) * eta * (1-eta)
+    Ndxi[2] = 0.25 * (1+2*xsi) * eta * (1+eta)
+    Ndxi[3] = -0.25 * (1-2*xsi) * eta * (1+eta)
+    Ndxi[4] = xsi * eta * (1-eta)
+    Ndxi[5] = 0.5 * (1+2*xsi) * (1-eta**2)
+    Ndxi[6] = -xsi * eta * (1+eta)
+    Ndxi[7] = -0.5 * (1-2*xsi) * (1-eta) * (1 + eta)
     Ndxi[8] = -2 * xsi * (1 - eta**2)
     return Ndxi
 
@@ -230,15 +230,15 @@ def quad9_shapefuncs_grad_eta(xsi, eta):
     Calculates derivatives of shape functions wrt. eta
     """
     Ndeta = np.zeros(9)
-    Ndeta[0] = 0.25 * (xsi + 2*eta + 1) * (xsi - 1)
-    Ndeta[1] = 0.25 * (xsi - 2*eta - 1) * (xsi + 1)
-    Ndeta[2] = 0.25 * (xsi + 2*eta + 1) * (xsi + 1)
-    Ndeta[3] = 0.25 * (xsi - 2*eta - 1) * (xsi - 1)
-    Ndeta[4] = -0.5 * (1 - xsi**2)
-    Ndeta[5] = -eta * (xsi + 1)
-    Ndeta[6] = 0.5 * (1 - xsi**2)
-    Ndeta[7] = eta * (xsi - 1)
-    Ndeta[8] = -2 * eta * (1 - xsi**2)
+    Ndeta[0] = 0.25 * xsi * (1-xsi) * (1-2*eta)
+    Ndeta[1] = -0.25 * xsi * (1+xsi) * (1-2*eta)
+    Ndeta[2] = 0.25 * xsi * (1+xsi) * (1+2*eta)
+    Ndeta[3] = -0.25 * xsi * (1-xsi) * (1+2*eta)
+    Ndeta[4] = -0.5 * (1+xsi) * (1-xsi) * (1-2*eta)
+    Ndeta[5] = 0.5 * xsi * (1+xsi) * (-2*eta)
+    Ndeta[6] = 0.5 * (1+xsi) * (1-xsi) * (1+2*eta)
+    Ndeta[7] = -0.5 * xsi * (1-xsi) * (-2*eta)
+    Ndeta[8] = (1-xsi**2) * (-2*eta)
     return Ndeta
 
 def quad9_Bmatrix(xsi, eta, ex, ey):
