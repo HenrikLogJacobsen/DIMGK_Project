@@ -102,8 +102,6 @@ def quad4_Bmatrix(xsi, eta, ex, ey):
     Calculates the B matrix for a 4 node quadrilateral element
     """
     # ----- Derivatives of shape functions -----
-    print('xsi = ', xsi)
-    print('eta = ', eta)
     Ndxi = quad4_shapefuncs_grad_xsi(xsi, eta)
     Ndeta = quad4_shapefuncs_grad_eta(xsi, eta)
 
@@ -207,7 +205,7 @@ def quad9_shapefuncs(xsi, eta):
     N[4] = -0.5 * (1 + xsi) * (1 - xsi) * eta * (1 - eta)
     N[5] = 0.5  * xsi * (1 + xsi) * (1 - eta) * (1 + eta)
     N[6] = 0.5  * (1 + xsi) * (1 - xsi) * eta * (1 + eta)
-    N[7] = -0.5 * xsi * (1 - xsi) * (1 - eta) * eta
+    N[7] = -0.5 * xsi * (1 - xsi) * (1 - eta) * (1 + eta)
     N[8] = (1 - xsi**2) * (1 - eta**2)
     return N
 
@@ -223,7 +221,7 @@ def quad9_shapefuncs_grad_xsi(xsi, eta):
     Ndxi[4] = xsi * (1 - eta) * eta
     Ndxi[5] = 0.5 * (1 + 2*xsi) * (1 - eta) * (1 + eta)
     Ndxi[6] = -xsi * (1 + eta) * eta
-    Ndxi[7] = -0.5 * (1 - 2*xsi) * (1 - eta) * eta
+    Ndxi[7] = -0.5 * (1 - 2*xsi) * (1 - eta) * (1 + eta)
     Ndxi[8] = -2 * xsi * (1 - eta**2)
     return Ndxi
 
@@ -239,7 +237,7 @@ def quad9_shapefuncs_grad_eta(xsi, eta):
     Ndeta[4] = -0.5 * (1 + xsi) * (1 - xsi) * (1 - 2*eta)
     Ndeta[5] = 0.5 * xsi * (1 + xsi) * (-2*eta)
     Ndeta[6] = 0.5 * (1 + xsi) * (1 - xsi) * (1 + 2*eta)
-    Ndeta[7] = -0.5 * xsi * (1 - xsi) * (1 - 2*eta)
+    Ndeta[7] = -0.5 * xsi * (1 - xsi) * (-2*eta)
     Ndeta[8] = -2 * eta * (1 - xsi**2)
     return Ndeta
 
@@ -248,8 +246,6 @@ def quad9_Bmatrix(xsi, eta, ex, ey):
     Calculates the B matrix for a 9 node quadrilateral element
     """
     # ----- Derivatives of shape functions -----
-    print('xsi = ', xsi)
-    print('eta = ', eta)
     Ndxi = quad9_shapefuncs_grad_xsi(xsi, eta)
     Ndeta = quad9_shapefuncs_grad_eta(xsi, eta)
 
@@ -306,8 +302,8 @@ def quad9_Kmatrix(ex, ey, D, th, eq=None):
     else:
         f = np.array([eq]).T
 
-    # Ke = np.zeros((18,18))
-    Ke = np.eye(18) * 1.0e6
+    Ke = np.zeros((18,18))
+    #Ke = np.eye(18) * 1.0e6
     fe = np.zeros((18,1))
 
     numGaussPoints = 3
