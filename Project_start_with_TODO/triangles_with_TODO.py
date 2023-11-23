@@ -33,7 +33,7 @@ def tri3_Bmatrix(ex, ey):
     :return  [3 x 6] strain displacement matrix
     """
 
-    A = tri6_area(ex, ey)
+    A = tri3_area(ex, ey)
     A2 = 2.0 * A
 
     cyclic_ijk = [0, 1, 2, 0, 1]  # Cyclic permutation of the nodes i,j,k
@@ -68,7 +68,7 @@ def tri3_Kmatrix(ex, ey, D, th, eq=None):
     :return mat fe: consistent load vector [6 x 1] (if eq!=None)
     """
 
-    A = tri6_area(ex, ey)
+    A = tri3_area(ex, ey)
     A2 = 2.0 * A
 
     cyclic_ijk = [0, 1, 2, 0, 1]  # Cyclic permutation of the nodes i,j,k

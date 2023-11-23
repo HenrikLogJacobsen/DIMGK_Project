@@ -158,9 +158,8 @@ class CantileverModel(FemModel):
                             self.elnods.append([nod9[3*i+j],nod9[3*i+j+1],nod9[3*(i+1)+j+1],nod9[3*(i+1)+j]])
                 elif numElementNodes == 9:
                     self.elnods.append([nod9[0],nod9[2],nod9[8],nod9[6],
-                                     nod9[1],nod9[5],nod9[7],nod9[3],
-                                     nod9[4]])
-
+                                    nod9[1],nod9[5],nod9[7],nod9[3],
+                                    nod9[4]])
 
         for iel in range(len(self.elnods)):
             dofs = []
