@@ -122,5 +122,5 @@ for i in range(0,(numNodesY*2),2):
 print("Total reaction force in x:{:12.3e} y:{:12.3e})".format(R0Sum[0],R0Sum[1]))
 
 # Draw the displacements and stresses
-model.vtu_write_stl_style_mesh("Results_9node_quad_13.vtu",dispVector=r,elementCornerStresses=elementCornerStresses)
+model.vtu_write_stl_style_mesh("Results_9node_quad.vtu",dispVector=r,elementCornerStresses=elementCornerStresses)
 
