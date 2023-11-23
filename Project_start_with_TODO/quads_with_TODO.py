@@ -102,6 +102,8 @@ def quad4_Bmatrix(xsi, eta, ex, ey):
     Calculates the B matrix for a 4 node quadrilateral element
     """
     # ----- Derivatives of shape functions -----
+    print('xsi = ', xsi)
+    print('eta = ', eta)
     Ndxi = quad4_shapefuncs_grad_xsi(xsi, eta)
     Ndeta = quad4_shapefuncs_grad_eta(xsi, eta)
 
@@ -198,15 +200,15 @@ def quad9_shapefuncs(xsi, eta):
     """
     # ----- Shape functions -----
     N = np.zeros(9)
-    N[0] = 0.25 * xsi * eta * (1-xsi) * (1-eta)
-    N[1] = -0.25 * xsi * eta * (1+xsi) * (1-eta)
-    N[2] = 0.25 * xsi * eta * (1+xsi) * (1+eta)
-    N[3] = -0.25 * xsi * eta * (1-xsi) * (1+eta)
-    N[4] = -0.5 * (1+xsi) * (1-xsi) * eta * (1-eta)
-    N[5] = 0.5 * xsi * (1+xsi) * (1-eta) * (1+eta)
-    N[6] = 0.5 * (1+xsi) * (1-xsi) * eta * (1+eta)
-    N[7] = -0.5 * xsi * (1-xsi) * (1-eta) * (1 + eta)
-    N[8] = (1+xsi) * (1-xsi) * (1+eta) * (1-eta)
+    N[0] = 0.25 * xsi * eta * (1 - xsi) * (1 - eta)
+    N[1] = -0.25 * xsi * eta * (1 + xsi) * (1 - eta)
+    N[2] = 0.25 * xsi * eta * (1 + xsi) * (1 + eta)
+    N[3] = -0.25 * xsi * eta * (1 - xsi) * (1 + eta)
+    N[4] = -0.5 * (1 + xsi) * (1 - xsi) * eta * (1 - eta)
+    N[5] = 0.5  * xsi * (1 + xsi) * (1 - eta) * (1 + eta)
+    N[6] = 0.5  * (1 + xsi) * (1 - xsi) * eta * (1 + eta)
+    N[7] = -0.5 * xsi * (1 - xsi) * (1 - eta) * eta
+    N[8] = (1 - xsi**2) * (1 - eta**2)
     return N
 
 def quad9_shapefuncs_grad_xsi(xsi, eta):
@@ -214,14 +216,14 @@ def quad9_shapefuncs_grad_xsi(xsi, eta):
     Calculates derivatives of shape functions wrt. xsi
     """
     Ndxi = np.zeros(9)
-    Ndxi[0] = 0.25 * (1-2*xsi) * eta * (1-eta)
-    Ndxi[1] = -0.25 * (1+2*xsi) * eta * (1-eta)
-    Ndxi[2] = 0.25 * (1+2*xsi) * eta * (1+eta)
-    Ndxi[3] = -0.25 * (1-2*xsi) * eta * (1+eta)
-    Ndxi[4] = xsi * eta * (1-eta)
-    Ndxi[5] = 0.5 * (1+2*xsi) * (1-eta**2)
-    Ndxi[6] = -xsi * eta * (1+eta)
-    Ndxi[7] = -0.5 * (1-2*xsi) * (1-eta) * (1 + eta)
+    Ndxi[0] = 0.25 * (1 - 2*xsi) * eta * (1 - eta)
+    Ndxi[1] = -0.25 * (1 + 2*xsi) * eta * (1 - eta)
+    Ndxi[2] = 0.25 * (1 + 2*xsi) * eta * (1 + eta)
+    Ndxi[3] = -0.25 * (1 - 2*xsi) * eta * (1 + eta)
+    Ndxi[4] = xsi * (1 - eta) * eta
+    Ndxi[5] = 0.5 * (1 + 2*xsi) * (1 - eta) * (1 + eta)
+    Ndxi[6] = -xsi * (1 + eta) * eta
+    Ndxi[7] = -0.5 * (1 - 2*xsi) * (1 - eta) * eta
     Ndxi[8] = -2 * xsi * (1 - eta**2)
     return Ndxi
 
@@ -230,15 +232,15 @@ def quad9_shapefuncs_grad_eta(xsi, eta):
     Calculates derivatives of shape functions wrt. eta
     """
     Ndeta = np.zeros(9)
-    Ndeta[0] = 0.25 * xsi * (1-xsi) * (1-2*eta)
-    Ndeta[1] = -0.25 * xsi * (1+xsi) * (1-2*eta)
-    Ndeta[2] = 0.25 * xsi * (1+xsi) * (1+2*eta)
-    Ndeta[3] = -0.25 * xsi * (1-xsi) * (1+2*eta)
-    Ndeta[4] = -0.5 * (1+xsi) * (1-xsi) * (1-2*eta)
-    Ndeta[5] = 0.5 * xsi * (1+xsi) * (-2*eta)
-    Ndeta[6] = 0.5 * (1+xsi) * (1-xsi) * (1+2*eta)
-    Ndeta[7] = -0.5 * xsi * (1-xsi) * (-2*eta)
-    Ndeta[8] = (1-xsi**2) * (-2*eta)
+    Ndeta[0] = 0.25 * xsi * (1 - xsi) * (1 - 2*eta)
+    Ndeta[1] = -0.25 * xsi * (1 + xsi) * (1 - 2*eta)
+    Ndeta[2] = 0.25 * xsi * (1 + xsi) * (1 + 2*eta)
+    Ndeta[3] = -0.25 * xsi * (1 - xsi) * (1 + 2*eta)
+    Ndeta[4] = -0.5 * (1 + xsi) * (1 - xsi) * (1 - 2*eta)
+    Ndeta[5] = 0.5 * xsi * (1 + xsi) * (-2*eta)
+    Ndeta[6] = 0.5 * (1 + xsi) * (1 - xsi) * (1 + 2*eta)
+    Ndeta[7] = -0.5 * xsi * (1 - xsi) * (1 - 2*eta)
+    Ndeta[8] = -2 * eta * (1 - xsi**2)
     return Ndeta
 
 def quad9_Bmatrix(xsi, eta, ex, ey):
@@ -246,6 +248,8 @@ def quad9_Bmatrix(xsi, eta, ex, ey):
     Calculates the B matrix for a 9 node quadrilateral element
     """
     # ----- Derivatives of shape functions -----
+    print('xsi = ', xsi)
+    print('eta = ', eta)
     Ndxi = quad9_shapefuncs_grad_xsi(xsi, eta)
     Ndeta = quad9_shapefuncs_grad_eta(xsi, eta)
 
@@ -255,10 +259,7 @@ def quad9_Bmatrix(xsi, eta, ex, ey):
     J = G @ H
 
     # ----- Inverse of Jacobian matrix -----
-    if (np.linalg.det(J) == 0):
-        invJ = np.zeros((2,2))
-    else:
-        invJ = np.linalg.inv(J)
+    invJ = np.linalg.inv(J)
 
     # ----- Derivatives of shape functions with respect to x and y -----
     Ndx = invJ[0, 0] * Ndxi + invJ[0, 1] * Ndeta
@@ -297,16 +298,16 @@ def quad9_Kmatrix(ex, ey, D, th, eq=None):
     :param list D : 2D constitutive matrix
     :param list th: element thickness
     :param list eq: distributed loads, local directions [bx, by]
-    :return mat Ke: element stiffness matrix [6 x 6]
-    :return mat fe: consistent load vector [6 x 1] (if eq!=None)
+    :return mat Ke: element stiffness matrix [18 x 18]
+    :return mat fe: consistent load vector [18 x 1] (if eq!=None)
     """
     if eq is None:
         f = np.zeros((2,1))
     else:
         f = np.array([eq]).T
 
-    Ke = np.zeros((18,18))
-    #Ke = np.eye(18) * 1.0e6
+    # Ke = np.zeros((18,18))
+    Ke = np.eye(18) * 1.0e6
     fe = np.zeros((18,1))
 
     numGaussPoints = 3
