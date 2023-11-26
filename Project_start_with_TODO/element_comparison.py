@@ -32,10 +32,11 @@ def compare_elements(numElementNodes, numNodesX, numNodesY):
 
     # Distributed load in x and y, load pr unit area
     eq = np.array([0.,1.0e3])
-    eq = np.array([0.,0.])
+    #eq = np.array([0.,0.])
     #End load, Given as resultant
 
     endLoadXY = np.array([0.0,3.0e6])
+    endLoadXY = np.array([0.0,0.0])
     #endLoadXY = np.array([3.0e6,0])
     #endLoadXY = np.array([4.2e9,0.0]) # Should give unit disp at Poisson = 0
 
@@ -127,17 +128,33 @@ def compare_elements(numElementNodes, numNodesX, numNodesY):
 
     # Draw the displacements and stresses
     #model.vtu_write_stl_style_mesh("Results_9node_quad.vtu",dispVector=r,elementCornerStresses=elementCornerStresses)
-
+    print(yC)
     return yC
 
 
 def iterate_numnodes(elementNodes):
     yC_list = []
-    for numNodes in range(3, 100, 4):
-        yC_list.append(compare_elements(elementNodes, numNodes*5, numNodes))
-    return yC_list
+    numNodes = [i for i in range(15, 40, 2)]
+    for nn in numNodes:
+        yC_list.append(compare_elements(elementNodes, nn*5, nn))
+    return numNodes, yC_list
 
 
 # plot for 3,4,6,9 node elements
-print(1)
-print(iterate_numnodes(3))
+#numNodes_tot, node3_yc = iterate_numnodes(3)
+numNodes_tot, node4_yc = iterate_numnodes(4)
+#_, node6_yc = iterate_numnodes(6)
+_, node9_yc = iterate_numnodes(9)
+
+plt.figure()
+plt.title('Distributed load - 4 node quad vs 9 node quad')
+#plt.plot(numNodes_tot, node3_yc, label='3 node')
+plt.plot(numNodes_tot, node4_yc, label='4 node')
+#plt.plot(numNodes_tot, node6_yc, label='6 node')
+plt.plot(numNodes_tot, node9_yc, label='9 node')
+plt.xlabel('Number of nodes')
+plt.ylabel('Displacement at center of right edge')
+plt.legend(loc='best')
+plt.grid()
+plt.show()
+
