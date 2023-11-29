@@ -141,8 +141,8 @@ def iterate_numnodes(elementNodes):
 
 
 # plot for 3,4,6,9 node elements
-numNodes_tot, node3_yc = iterate_numnodes(3)
-numNodes_tot, node4_yc = iterate_numnodes(4)
+#numNodes_tot, node3_yc = iterate_numnodes(3)
+#numNodes_tot, node4_yc = iterate_numnodes(4)
 numNodes_tot, node6_yc = iterate_numnodes(6)
 numNodes_tot, node9_yc = iterate_numnodes(9)
 
@@ -153,10 +153,10 @@ totNodes = [5*n*n for n in numNodes_tot]
 calc_ans = np.ones(len(totNodes))*ans2
 
 plt.figure()
-plt.title('Lasttilfelle 2 - 4 vs 9 noders elementtyper')
+plt.title('Lasttilfelle 2 - 6 vs 9 node elementtyper')
 #plt.plot(totNodes, node3_yc, label='3 noder')
-plt.plot(totNodes, node4_yc, label='4 noder')
-#plt.plot(totNodes, node6_yc, label='6 noder')
+#plt.plot(totNodes, node4_yc, label='4 noder')
+plt.plot(totNodes, node6_yc, label='6 noder')
 plt.plot(totNodes, node9_yc, label='9 noder')
 #plt.plot(totNodes, calc_ans, label='Analytisk')
 plt.xlabel('Totalt antall noder')
