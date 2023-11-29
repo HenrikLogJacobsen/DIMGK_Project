@@ -29,10 +29,10 @@ model = fem_models.CantileverModel(L, H, numElementNodes, numNodesX, numNodesY)
 # Distributed load in x and y, load pr unit area
 eq = np.array([0.,1.0e3])
 endLoadXY = np.array([0.0, 0.0])
-#eq = np.array([0.,0.])
+eq = np.array([0.,0.])
 #End load, Given as resultant
 
-#endLoadXY = np.array([0.0,3.0e6])
+endLoadXY = np.array([0.0,3.0e6])
 #endLoadXY = np.array([3.0e6,0])
 #endLoadXY = np.array([4.2e9,0.0]) # Should give unit disp at Poisson = 0
 

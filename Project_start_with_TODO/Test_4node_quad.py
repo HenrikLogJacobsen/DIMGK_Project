@@ -52,3 +52,35 @@ fr = Ke @ rigR
 print('Force from rigX translation:\n', fx)
 print('Force from rigY translation:\n', fy)
 print('Force from rigR rotation:\n', fr)
+
+# Integration points for quad4 element
+numGaussPoints = 2  # Assuming 2x2 Gauss integration for quad4
+gp, _ = quad.gauss_points(numGaussPoints)
+
+# Define reference strains for constant strain test
+constEx = np.zeros((8,1))
+constEy = np.zeros((8,1))
+constGamma = np.zeros((8,1))
+
+# Populate 
+for i in range(4):
+    constEx[i * 2, 0] = ex[i]  # Example values for constant strain
+    constEy[i * 2 + 1, 0] = ey[i]
+    constGamma[i * 2, 0] = ey[i]
+    constGamma[i * 2 + 1, 0] = ex[i]
+
+# Check constant strain at integration points
+for xsi in gp:
+    for eta in gp:
+        B_quad4 = quad.quad4_Bmatrix(xsi, eta, ex, ey)
+
+        # Calculate strains for constant strain state
+        Ex_quad4 = B_quad4 @ constEx
+        Ey_quad4 = B_quad4 @ constEy
+        Gamma_quad4 = B_quad4 @ constGamma
+
+        print('Strains at integration point ({}, {}):'.format(xsi, eta))
+        print('Ex:', Ex_quad4)
+        print('Ey:', Ey_quad4)
+        print('Gamma:', Gamma_quad4)
+        print('----------')
