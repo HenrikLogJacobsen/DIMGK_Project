@@ -271,13 +271,14 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
         # TODO: validate this
         eqMat = np.array([[eq[0]],[eq[1]]])
         for i in range(3):
-            zeta = zetaInt[i,:]
-            wi = wInt[i]
-            wj = wInt[j]
-            N = tri6_N_matrix(zeta)
-            fe += N.T @ eqMat * wi * wj * A * th
+            for j in range(3):
+                zeta = zetaInt[i,:]
+                wi = wInt[i]
+                wj = wInt[j]
+                N = tri6_N_matrix(zeta)                
+                fe += N.T @ eqMat * wi * wj * A * th
 
-        # ----------------------------
+            # ---------------------------- #
 
         return Ke, fe
 

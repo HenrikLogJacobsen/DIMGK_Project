@@ -13,7 +13,7 @@ import fem_utilities as fem_util
 import fem_models
 
 # Element Type
-numElementNodes = 9  # Valid numbers 3, 4, 6, 9
+numElementNodes = 6  # Valid numbers 3, 4, 6, 9
 
 # Number of nodSes: Should be odd numbers in order to handle 9 node quad and 6 node triangle
 numNodesX = 21
@@ -28,10 +28,11 @@ model = fem_models.CantileverModel(L, H, numElementNodes, numNodesX, numNodesY)
 
 # Distributed load in x and y, load pr unit area
 eq = np.array([0.,1.0e3])
-eq = np.array([0.,0.])
+endLoadXY = np.array([0.0, 0.0])
+#eq = np.array([0.,0.])
 #End load, Given as resultant
 
-endLoadXY = np.array([0.0,3.0e6])
+#endLoadXY = np.array([0.0,3.0e6])
 #endLoadXY = np.array([3.0e6,0])
 #endLoadXY = np.array([4.2e9,0.0]) # Should give unit disp at Poisson = 0
 
