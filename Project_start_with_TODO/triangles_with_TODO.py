@@ -255,7 +255,6 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
 
     Ke = np.zeros((12,12))
 
-    # Not Sure about this
     for i in range(3):
         for j in range(3):
             zeta = zetaInt[i,:]
@@ -263,12 +262,10 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
             wj = wInt[j]
             B = tri6_Bmatrix(zeta, ex, ey)
             Ke += wi * wj * ((B.T @ D) @ B) * A * th
-    # ----------------------------
     if eq is None:
         return Ke
     else:
         fe = np.zeros((12,1))
-        # TODO: validate this
         eqMat = np.array([[eq[0]],[eq[1]]])
         for i in range(3):
             zeta = zetaInt[i,:]
@@ -277,7 +274,6 @@ def tri6_Kmatrix(ex,ey,D,th,eq=None):
             N = tri6_N_matrix(zeta)
             fe += N.T @ eqMat * wi * wj * A * th
 
-        # ----------------------------
 
         return Ke, fe
 
