@@ -1,8 +1,7 @@
 import numpy as np
 import quads_with_TODO as quad
 
-# Define the topology (coordinates of the nodes)
-# For a 4-node quadrilateral, we typically define the nodes in a counterclockwise manner
+# Define the topology
 ex = np.array([0.0, 1.0, 1.0, 0.0])
 ey = np.array([0.0, 0.0, 1.0, 1.0])
 
@@ -19,7 +18,7 @@ D = np.array([
     [nu, 1.0, 0.],
     [0., 0., (1.0 - nu) / 2.0]]) * E / (1.0 - nu**2)
 
-# Distributed loads (if any)
+# Distributed loads
 eq = [1.0, 3.0]
 
 # Initialize stiffness matrix and consistent load vector
@@ -54,7 +53,7 @@ print('Force from rigY translation:\n', fy)
 print('Force from rigR rotation:\n', fr)
 
 # Integration points for quad4 element
-numGaussPoints = 2  # Assuming 2x2 Gauss integration for quad4
+numGaussPoints = 2  # Number of Gauss points
 gp, _ = quad.gauss_points(numGaussPoints)
 
 # Define reference strains for constant strain test
