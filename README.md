@@ -6,4 +6,4 @@
 - Even Glestad Gaarder
 - Henrik Jacobsen
 
-
+[Link to final report (norwegian)](/Rapport.pdf)
