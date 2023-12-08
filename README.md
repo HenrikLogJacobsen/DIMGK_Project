@@ -6,8 +6,4 @@
 - Even Glestad Gaarder
 - Henrik Jacobsen
 
-### Modules
 
-```
-pip install meshio
-```
